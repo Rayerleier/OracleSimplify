@@ -1,0 +1,7 @@
+curl -X POST http://localhost:3000/compute -H "Content-Type: application/json" -d '{
+  "astnodes": [
+    {"nodeType": "OPERATION", "value": "+", "left": 1, "right": 2},
+    {"nodeType": "NUMBER", "value": "3", "left": 0, "right": 0},
+    {"nodeType": "NUMBER", "value": "5", "left": 0, "right": 0}
+  ]
+}'

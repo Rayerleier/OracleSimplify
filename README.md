@@ -1,66 +1,112 @@
-## Foundry
+# Option Task 2
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Contract
 
-Foundry consists of:
+- Designed a `deposit` function to receive user deposits.
+- Modified the `compute` function to check if the user has sufficient balance in their deposits. If the balance is insufficient, the calculation cannot proceed; if sufficient, the corresponding balance is deducted.
+- Added a `withdrawAdminBalance` function for the admin to withdraw the contract balance.
+- Added a `verifyAndWithdraw`function to verify users off-chain using EIP712 signatures. Upon successful verification, the user is allowed to withdraw.
+  - The verification information includes `logicId`, `nonce`, `userAddress`, and `result`.
+- Run the test script `forge test -vvvv`.
+- Run `anvil` to start location client.
+- Deploy the script `forge script ./script/Oracle.s.sol:DeployOracle --broadcast --fork-url http://127.0.0.1:8545 --private-key $PrivateKey`.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Gateway
 
-## Documentation
+- Modified the `/compute` function to require the user address parameter.
 
-https://book.getfoundry.sh/
+- Added 
 
-## Usage
+  ```
+  /verifyAndWithdraw
+  ```
 
-### Build
+   for user withdrawals.
 
-```shell
-$ forge build
+  - Withdrawals require the user's address parameter and an off-chain signature.
+
+- Added `generate_signature.js` to compute the off-chain signature.
+
+- Added `/withdrawAdminBalance` for the admin to withdraw deposits.
+
+- Modified other corresponding logic.
+
+- Run the gateway with `node server.js`.
+
+### Test Script
+
+1. Register Logic
+
+```bash
+
+curl -X POST http://localhost:3000/registerLogic -H "Content-Type: application/json" -d '{
+  "astNodes": [
+    { "nodeType": 2, "value": "+", "left": 1, "right": 2 },
+    { "nodeType": 0, "value": "3", "left": 0, "right": 0 },
+    { "nodeType": 0, "value": "5", "left": 0, "right": 0 }
+  ]
+}'
 ```
 
-### Test
+2. User Compute
 
-```shell
-$ forge test
+```bash
+
+curl -X POST http://localhost:3000/compute -H "Content-Type: application/json" -d '{
+  "logicId": 0,
+  "userAddress": "USER_ADDRESS"
+}'
 ```
 
-### Format
+3. Admin Callback
 
-```shell
-$ forge fmt
+```bash
+
+curl -X POST http://localhost:3000/callback -H "Content-Type: application/json" -d '{
+  "logicId": 0
+}'
 ```
 
-### Gas Snapshots
+4. User Deposit
 
-```shell
-$ forge snapshot
+```bash
+
+curl -X POST http://localhost:3000/deposit -H "Content-Type: application/json" -d '{
+  "amount": "1.0",
+  "userAddress": "USER_ADDRESS"
+}'
 ```
 
-### Anvil
+5. User Withdraw
 
-```shell
-$ anvil
+```bash
+
+curl -X POST http://localhost:3000/verifyAndWithdraw -H "Content-Type: application/json" -d '{
+  "logicId": 0,
+  "nonce": 0,
+  "result": 8,
+  "signature": "YOUR_GENERATED_SIGNATURE",
+  "amount": "0.5",
+  "userAddress": "USER_ADDRESS"
+}'
 ```
 
-### Deploy
+6. Admin Withdraw Balance
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```bash
+
+curl -X POST http://localhost:3000/withdrawAdminBalance -H "Content-Type: application/json"
 ```
 
-### Cast
+### Testing Procedure
 
-```shell
-$ cast <subcommand>
-```
+1. Start the gateway with `node server.js`.
+2. Test the register logic.
+3. Test user deposit.
+4. Test user compute.
+5. Generate the signature with `node generate_signature.js`.
+6. Test user withdrawal.
+7. Test callback computation.
+8. Test admin withdrawal.
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+**Note: Ensure all parameters are correct at each step, such as contract address, user public key, and user private key for successful operations.**

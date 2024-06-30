@@ -1,0 +1,179 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "FEE",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "admin",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "adminComputeResult",
+    "inputs": [
+      {
+        "name": "computeId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "callback",
+    "inputs": [
+      {
+        "name": "astnodes",
+        "type": "tuple[]",
+        "internalType": "struct AstNode.Info[]",
+        "components": [
+          {
+            "name": "nodeType",
+            "type": "uint8",
+            "internalType": "enum AstNode.NodeType"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "left",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "right",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "compute",
+    "inputs": [
+      {
+        "name": "astnodes",
+        "type": "tuple[]",
+        "internalType": "struct AstNode.Info[]",
+        "components": [
+          {
+            "name": "nodeType",
+            "type": "uint8",
+            "internalType": "enum AstNode.NodeType"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "left",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "right",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "result",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "computeId",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "AdminCompute",
+    "inputs": [
+      {
+        "name": "computeId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "result",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "UserCompute",
+    "inputs": [
+      {
+        "name": "userAddress",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "result",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  }
+]
